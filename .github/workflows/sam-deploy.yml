@@ -34,7 +34,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: 'eu-west-2'
+          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
 
       - name: Build SAM app
         run: |
@@ -46,4 +46,4 @@ jobs:
             --resolve-s3 \
             --stack-name helloer \
             --capabilities CAPABILITY_IAM \
-            --region eu-west-2
+            --region ${{ secrets.AWS_DEFAULT_REGION }}

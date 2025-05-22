@@ -23,7 +23,7 @@ def handler(event, context, table=None):
             'response': response
         }
 
-        table.put_item(Item=item)
+        # table.put_item(Item=item)  # dont send to db for now
         return {
             'statusCode': 200,
             'body': json.dumps({'message': response})
