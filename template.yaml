@@ -1,0 +1,63 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: SAM template for Hello Lambda + API Gateway with CORS + DynamoDB todos table.
+
+Globals:
+  Function:
+    Timeout: 10
+    Runtime: python3.13
+    Handler: app.lambda_handler
+    MemorySize: 128
+    Environment:
+      Variables:
+        TABLE_NAME: !Ref TodosTable
+
+Resources:
+
+  HelloFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      # FunctionName: prod_HelloFunction
+      CodeUri: src/
+      Handler: handlers/hello.handler
+      Description: Lambda function that returns hello
+      Events:
+        ApiEvent:
+          Type: HttpApi
+          Properties:
+            Path: /hello
+            Method: GET
+            ApiId: !Ref HelloApi
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref TodosTable
+
+  HelloApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      #Name: TodosApi
+      CorsConfiguration:
+        AllowMethods:
+          - GET
+        AllowOrigins:
+          - '*'
+        AllowHeaders:
+          - '*'
+      StageName: prod
+
+  TodosTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      #TableName: prod_TodosTable
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+
+Outputs:
+  HelloApiUrl:
+    Description: "API Gateway endpoint URL"
+    Value: !Sub "https://${HelloApi}.execute-api.${AWS::Region}.amazonaws.com/prod/hello"
