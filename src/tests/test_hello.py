@@ -33,7 +33,7 @@ def test_handler_success(mock_table):
     assert response['statusCode'] == 200
 
     # Assert that the expected message is in the response body
-    assert 'Hello production ready code' in body['message']
+    assert 'Hello, world!' in body['message']
 
     # Check that put_item was called exactly once
     mock_table.put_item.assert_called_once()

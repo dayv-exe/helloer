@@ -13,7 +13,7 @@ def get_table():
 def handler(event, context, table=None):
     if table is None:
         table = get_table()
-    response = "Hello production ready code"
+    response = "Hello, world!"
     try:
         todo_id = str(uuid.uuid4())
 
