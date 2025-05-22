@@ -44,6 +44,6 @@ jobs:
         run: |
           sam deploy --no-confirm-changeset --no-fail-on-empty-changeset \
             --resolve-s3
-            --stack-name "helloer" \
+            --stack-name helloer \
             --capabilities CAPABILITY_IAM \
-            --region "eu-west-2"
+            --region eu-west-2
